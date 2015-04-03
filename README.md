@@ -1,6 +1,8 @@
 # playground
 
-FIXME
+Project for learning Clojure language and tooling.
+
+Currently based on reading the book : Web Development with Clojure
 
 ## Prerequisites
 

@@ -1,9 +1,12 @@
 (ns playground.routes.home
   (:require [compojure.core :refer :all]
-            [playground.views.layout :as layout]))
+            [liberator.core 
+             :refer [defresource resource request-method-in]]))
 
-(defn home []
-  (layout/common [:h1 "Hello Werld"]))
+(defresource home 
+  :handle-ok "Hello Werld"
+  :etag "fixed-etag"
+  :available-media-types ["text/plain"])
 
 (defroutes home-routes
-  (GET "/" [] (home)))
+  (ANY "/" request home))

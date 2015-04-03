@@ -5,7 +5,6 @@
                  [compojure "1.1.6"]
                  [liberator "0.11.0"]
                  [cheshire "5.3.1"]
-                 [hiccup "1.0.5"]
                  [ring-server "0.3.1"]]
   :plugins [[lein-ring "0.8.12"]]
   :ring {:handler playground.handler/app
