@@ -4,6 +4,7 @@
   :dependencies [[org.clojure/clojure "1.6.0"]
                  [compojure "1.1.6"]
                  [liberator "0.11.0"]
+                 [ring/ring-json "0.1.2"]
                  [cheshire "5.3.1"]
                  [joplin.core  "0.2.10"]
                  [org.slf4j/slf4j-log4j12  "1.6.6"]

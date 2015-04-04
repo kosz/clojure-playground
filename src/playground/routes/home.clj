@@ -5,35 +5,16 @@
             [liberator.core 
              :refer [defresource resource request-method-in]]))
 
-(def users(atom ["Hohn" "Jane"]))
+(defn get-todo [id] "asdf")
 
-(defresource home 
-  :handle-ok "Hello Werld"
-  :etag "fixed-etag"
-  :available-media-types ["text/plain"])
+(defroutes app-routes
+  (context "/todos" [] 
+    (defroutes todos
+      (GET  "/" [] (get-todo))
+      (POST "/" {todo :todo} (get-todo todo))
+      (context "/:id" [id] (defroutes todo-routes
+        (GET    "/" [] (get-todo id))
+        (PUT    "/" {todo :todo} (get-todo id todo))
+        (DELETE "/" [] (get-todo id)))))))
 
-(defresource cass 
-  :handle-ok (fn [_] (cc/connect ["127.0.0.1"])
-               (print-str "teasdf")) 
-  :etag "fixed-etag"
-  :available-media-types ["application/json"])
 
-(defresource get-users
-  :allowed-methods [:get]
-  :handle-ok (fn [_] (generate-string @users))
-  :available-media-types ["application/json"])
-
-(defresource add-user
-  :method-allowed? (request-method-in :post)
-  :post!
-  (fn [context]
-    (let [params (get-in context [:request :form-params])]
-      (swap! users conj (get params "user"))))
-  :handle-created (generate-string @users)
-  :available-media-types ["application/json"])
-
-(defroutes home-routes
-  (ANY "/" request home)
-  (ANY "/cass" request cass)
-  (ANY "/get-users" request get-users)
-  (ANY "/add-user" request add-user))
