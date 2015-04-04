@@ -5,11 +5,24 @@
                  [compojure "1.1.6"]
                  [liberator "0.11.0"]
                  [cheshire "5.3.1"]
+                 [joplin.core  "0.2.10"]
+                 [org.slf4j/slf4j-log4j12  "1.6.6"]
+                 [clojurewerkz/cassaforte  "2.0.0"]
+                 [log4j/log4j "1.2.16" :exclusions [javax.mail/mail
+                                                    javax.jms/jms
+                                                    com.sun.jdmk/jmxtools
+                                                    com.sun.jmx/jmxri]]
                  [ring-server "0.3.1"]]
-  :plugins [[lein-ring "0.8.12"]]
+  :plugins [[lein-ring "0.8.12"]
+            [joplin.lein  "0.2.10"]]
   :ring {:handler playground.handler/app
          :init playground.handler/init
          :destroy playground.handler/destroy}
+
+  :joplin {:migrators {:cass-mig "src/migrators"}
+           :seeds {:cass-seed "config/seeds"}
+           :databases {:cass-dev {:type :cass, :hosts ["127.0.0.1"], :keyspace "todo" }}
+           :environments {:dev [{:db :cass-dev, :migrator :cass-mig, :seed :cass-seed}]}}
   :profiles
   {:uberjar {:aot :all}
    :production
